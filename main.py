@@ -1,33 +1,40 @@
-restaurants = {
-    "Mexican": ["Rosa's", "Generosa's", "Red Carpet Bar & Restaurant"],
-    "Japanese": ["Misaki Sushi", "Pearl", "Beluga Bar"],
-    "Jamaican": ["Fish N Tings", "Jamaican Grill", "Yardie Kithen"],
-    "Italian": ["Portofino", "Little Venice", "La Trattoria"],
-    "Portugese": ["Devil's Ilse", "The Cottage Cafe", "Port O Call"]
+from restaurants import types, restaurant_data
 
+def autocomplete(text):
+    matches = [category for category in types if category.startswith(text)]
+    return matches
 
-}
+def retrieve_data(selected_category):
+    matching_restaurants = [restaurant for restaurant in restaurant_data if restaurant[0] == selected_category]
+    return matching_restaurants
 
-def reccomend(theme):
-    theme = input("What kind of food from bermuda would you like to try?\nWe have a selction of Mexican, Japanese, Jamaican, Italian and Portugese.\nWhat would you like? ")
-    if theme == "Mexican":
-        print(f"Mexican restaurants in the area are: {restaurants['Mexican']}")
-    elif theme == "Japanese":
-        print(f"Japanese restaurants in the area are: {restaurants['Japanese']}")
-    elif theme == "Jamaican": 
-        print(f"Jamaican restaurants in the area are: {restaurants['Jamaican']}")
-    elif theme == "Italian":
-        print(f"Italian restaurants in the area are: {restaurants['Italian']}")
-    elif theme == "Portugese":  
-        print(f"Portugese restaurants in the area are: {restaurants['Portugese']}")
+while True:
+    user_input = input("Enter the beginning of a category (e.g. 'f' for french, 'a' for american): ".lower())
+
+    autocomplete_results = autocomplete(user_input)
+
+    if not autocomplete_results:
+        print("No matching categories found.")
+    
     else:
-        print("No such theme exists in the recommendation system.")
-        x = input("Try again? Y/N? ")
-        if x == "y":
-            reccomend(theme)
+        print("Matching categories: ")
+        for category in autocomplete_results:
+            print(category)
+
+        selected_category = input("Select a category to retrieve data (or press Enter to exit): ").lower()
+
+        if selected_category == "":
+            break
+
+        matching_restuarants = retrieve_data(selected_category)
+
+        if not matching_restuarants:
+            print("No restaurants found for the selected category.")
+
         else:
-            return None
- 
-
-
-print(reccomend(restaurants))
+            print(f"Restaurants in the {selected_category} category:")
+            for restaurant in matching_restuarants:
+                print(f"Name: {restaurant[1]}")
+                print(f"Pricing: {restaurant[2]}/5")
+                print(f"Rating: {restaurant[3]}/5")
+                print(f"Address: {restaurant[4]}")
