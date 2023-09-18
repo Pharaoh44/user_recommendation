@@ -1,16 +1,20 @@
 from restaurants import types, restaurant_data
 
+# Autocomplete fuction
 def autocomplete(text):
     matches = [category for category in types if category.startswith(text)]
     return matches
 
+# Data retrieval function
 def retrieve_data(selected_category):
     matching_restaurants = [restaurant for restaurant in restaurant_data if restaurant[0] == selected_category]
     return matching_restaurants
 
+# Main Programm
 while True:
     user_input = input("Enter the beginning of a category (e.g. 'f' for french, 'a' for american): ".lower())
 
+    # Step 1 Auto Complete
     autocomplete_results = autocomplete(user_input)
 
     if not autocomplete_results:
@@ -21,11 +25,13 @@ while True:
         for category in autocomplete_results:
             print(category)
 
+        # User selects a category 
         selected_category = input("Select a category to retrieve data (or press Enter to exit): ").lower()
 
         if selected_category == "":
             break
-
+        
+        # Data retrieval and display 
         matching_restuarants = retrieve_data(selected_category)
 
         if not matching_restuarants:
